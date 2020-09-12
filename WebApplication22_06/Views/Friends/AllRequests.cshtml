@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewData["Title"] = "AllRequests";
+    Layout = "~/Views/UserLayout.cshtml";
+}
+
+<h1>All  Requests</h1>
+
+
+<div id="request">
+
+    <p>you have {{users.length}} requests</p>
+    <table class="table table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Actions</th>
+        </tr>
+        <tr v-for="item in users">
+            <td>{{item.anun}}</td>
+            <td>{{item.azganun}}</td>
+            <td>
+                <button class="btn btn-success" v-on:click="Aceptrequest(item)" 
+                        >Accept</button>
+                <button class="btn btn-danger" v-on:click="Delite(item)">Decline</button>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+
+<script>
+
+    new Vue({
+        el: "#request",
+        data: {
+            users: [],
+
+        },
+        methods: {
+            Aceptrequest: function (obj) {
+                axios.get("/friends/Aceptrequest/" + obj.id )
+                    .then(f => {
+
+                       // obj.Requests.Remove(data);
+                        let index = this.users.indexOf(obj);
+                        this.users.splice(index, 1);
+                    
+                    })
+            },
+
+            Delite: function (obj) {
+
+                axios.get("/friends/Delite/" + obj.id)
+                    .then(f => {
+                        let index = this.users.indexOf(obj);
+                        this.users.splice(index, 1);
+                        
+
+                    })
+            }
+        },
+
+            created: function () {
+                axios.get("/friends/getmyrequests")
+                    .then(r => {
+                        this.users = r.data;
+
+                    })
+            },
+
+
+        })
+    
+
+
+
+</script>
+

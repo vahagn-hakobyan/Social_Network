@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "Admin";
+    Layout = "~/Views/UserLayout.cshtml";
+}
+
+<h1>Admin</h1>
+
+<table class="table table-dark">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Login</th>
+        <th>Action</th>
+    </tr>
+    @foreach (User elm in ViewBag.Bazauser)
+    {
+<tr>
+
+    <td>@elm.Id</td>
+    <td>@elm.name</td>
+    <td>@elm.surname</td>
+    <td>@elm.login</td>
+    <td> <a href="/user/Block/@elm.Id"> Block</a> </td>
+    <td> <a href="/user/Unblock/@elm.Id"> Unblock</a> </td>
+
+</tr>
+    }
+
+</table>

@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewData["Title"] = "ChangePhoto";
+    Layout = "~/Views/UserLayout.cshtml";
+}
+
+<h1>Change  Photo</h1>
+
+<form method="post" action="/user/uploadpic" enctype="multipart/form-data">
+    <input type="file" name="nkar">
+    <button>Upload</button>
+</form>

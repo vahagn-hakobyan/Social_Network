@@ -1,0 +1,190 @@
+﻿@{
+    ViewData["Title"] = "Chat";
+    Layout = "~/Views/UserLayout.cshtml";
+}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+
+<!DOCTYPE html>
+<html class=''>
+<head>
+    <meta charset='UTF-8'>
+    <meta name="robots" content="noindex">
+    <link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
+    <link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
+    <link rel="canonical" href="https://codepen.io/emilcarlsson/pen/ZOQZaV?limit=all&page=74&q=contact+" />
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
+
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
+    <link href="~/css/chat.css" rel="stylesheet" />
+</head>
+<div id="frame">
+    <div id="sidepanel">
+        <div id="profile">
+            <div class="wrap" v-model="currentUser">
+                <img id="profile-img" src="http://emilcarlsson.se/assets/louislitt.png" alt="" class="online"/>
+                <p> Nika Simone</p>
+                <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
+                <div id="status-options">
+                    <ul>
+                        <li id="status-offline" class="active"><span class="status-circle"></span> <p>Online</p></li>
+                        <li id="status-away"><span class="status-circle"></span> <p>Away</p></li>
+                        <li id="status-busy"><span class="status-circle"></span> <p>Busy</p></li>
+                        <li id="status-offline"><span class="status-circle"></span> <p>Offline</p></li>
+                    </ul>
+                </div>
+                <div id="expanded">
+                    <label for="twitter"><i class="fa fa-facebook fa-fw" aria-hidden="true"></i></label>
+                    <input name="twitter" type="text" value="mikeross" />
+                    <label for="twitter"><i class="fa fa-twitter fa-fw" aria-hidden="true"></i></label>
+                    <input name="twitter" type="text" value="ross81" />
+                    <label for="twitter"><i class="fa fa-instagram fa-fw" aria-hidden="true"></i></label>
+                    <input name="twitter" type="text" value="mike.ross" />
+                </div>
+            </div>
+        </div>
+        <div id="search">
+            <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
+            <input type="text" placeholder="Search contacts..." />
+        </div>
+        <div id="contacts">
+            <ul>
+                <li v-for="item in friends" v-on:click="startChat(item.id)" class="contact" 
+                    v-bind:class="{'bg-success':item.id==currentUser}">
+                    <div class="wrap">
+                        <span class="contact-status online"></span>
+                        <img src= "http://emilcarlsson.se/assets/louislitt.png" alt="" />
+                      
+                        <div class="meta">
+                            <p class="name">{{item.name}} {{item.surname}}</p>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+        <div id="bottom-bar">
+            <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
+            <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
+        </div>
+    </div>
+    <div class="content">
+        @*<div class="contact-profile">
+            <img src="http://emilcarlsson.se/assets/louislitt.png" alt="">
+            <p class="name"> {{item.name}} </p>
+            <div class="social-media">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <i class="fa fa-instagram" aria-hidden="true"></i>
+            </div>
+        </div>*@
+        <div class="messages">
+            <ul>
+                <li v-bind:class="{'sent':item.fromm!=currentUser, 'replies':item.fromm==currentUser}"  v-for="item in messages">
+                    <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+                    <p>{{item.text}}</p>
+                </li>
+                
+               
+            </ul>
+        </div>
+        <div class="message-input">
+            <div class="wrap">
+                <input type="text" placeholder="Write your message..." v-on:keydown="sentMessage($event)" v-model="text"/>
+                <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+                <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+<script>
+    new Vue({
+        el: "#frame",
+        data: {
+            friends: [],
+            messages: [],
+            currentUser: -1,
+            text: "",
+            myIntervall: null,
+
+        },
+        methods: {
+            startChat: function (id) {
+                this.currentUser = id;
+                clearInterval(this.myIntervall),
+                this.myIntervall=setInterval(() => {
+
+                    axios.get("/messanger/getmessages/" + id)
+                        .then(r => {
+                            console.log(r.data)//r-y c#-ic ekacna
+                            this.messages = r.data
+                        })
+
+
+                },200)
+                
+                
+
+            },
+            userdetails: function (id) {
+                this.currentUser = id;
+                
+
+                        axios.get("/messanger/userdetails/" + id)
+                            .then(r => {
+                                console.log(r.data)//r-y c#-ic ekacna
+                                this.user = r.data
+                            })
+
+
+                 
+
+
+                 
+
+            },
+
+            sentMessage: function (e) {
+
+                if (e.key == "Enter") {
+                  
+                    axios({
+                        method: 'post',
+                        url: '/Messanger/AddMessage',
+                        headers:
+                        {
+                            'Content-Type': 'application/json'
+                        },
+                        data: JSON.stringify({ text:this.text, user:this.currentUser }),
+                    }).then(r => {
+                        console.log(r.data)
+                        this.messages.push({to:this.currentUser,text:this.text})
+                            this.text=""
+                       
+                    })
+                }
+            }
+
+        },
+        created: function () {
+            axios.get("/Friends/Getmyfriends")
+                .then(r => {
+                    this.friends = r.data;
+                })
+        }
+
+        
+    })
+</script>

@@ -1,0 +1,80 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width" />
+    <title>MainLayout</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark" id="test">
+
+
+        <ul class="navbar-nav">
+            @*<li class="nav-item">
+                    <a class="nav-link text-white" href="#">Link 1</a>
+
+                </li>*@
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/user/Profile">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/User/Settings">Settings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/Friends/AllRequests">Requests</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/Friends/dashboard">Friends</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/Messanger/chat">Chat
+                
+                <span class="text-danger" v-if="count>0">{{count}}</span>
+
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/User/Logout"> Logout</a>
+            </li>
+            <li class="nav-item">
+
+            </li>
+        </ul>
+
+    </nav>
+    <div class="container">
+        @* sa nshanakum e vor zugaher petq 1 dni nayev jarangi parunakutyun@ *@
+        @RenderBody()
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <script>
+
+        new Vue({
+            el: "#test",
+            data: {
+                count:0,
+            },
+            
+            created: function () {
+                setInterval(() => {
+
+                    axios.get("/messanger/unreadmessages")
+                        .then(r => {
+                            console.log(r.data);
+                            this.count = r.data;
+                        })
+
+                },300)
+            }
+        })
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "ChangeLogin";
+    Layout = "~/Views/UserLayout.cshtml";
+}
+
+<h1>ChangeLogin</h1>
+<form method="post" action="/user/ChangeLogin">
+
+    @if (TempData["Namak"] != null)
+    {
+        <p class="text-danger">@TempData["Namak"]</p>
+    }
+
+    <div class="form-group">
+        <label>Password</label>
+        <input class="form-control" placeholder=" New Password" name="password" />
+    </div>
+    <div class="form-group">
+        <label>Login</label>
+        <input class="form-control" id="imp1" placeholder="New Login" name="login" />
+    </div>
+    <button class="btn btn-warning btn-lg">Change</button>
+   
+</form>
+

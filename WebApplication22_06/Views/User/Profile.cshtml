@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/UserLayout.cshtml";
+    User current = ViewBag.currentUser as User;
+}
+<style>
+
+    .profile-pic {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .cover-section {
+        height: 400px;
+        background-image: url(https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569__340.jpg);
+        background-size: cover;
+    }
+
+ 
+</style>
+
+<h1>@current.name @current.surname</h1>
+@if(current.photo != null)
+{
+    <img class="profile-pic" src="~/nkarner/@current.photo" />
+}
+
+<div id="search">
+    <div>
+        <input class="form-control" v-model="searchText" v-on:input="searchUsers()" />
+        <div class="row" >
+            <div v-for="item in users" class="col-md-3">
+                <h3>{{item.name}} {{item.surname}}</h3>
+                <p v-if="item.areWeFriends==1">Your friend</p>
+                <button v-if="item.areWeFriends==0" v-on:click="addFriend(item)">Add Friend</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+<script>
+    new Vue({
+        el: "#search",
+        data: {
+            users: [],
+            searchText: "",
+        },
+        methods: {
+            searchUsers: function () {
+                axios.get("/user/search/" + this.searchText)
+                    .then(r => {
+                        console.log(r.data);
+                        this.users = r.data;
+                    })
+            },
+            addFriend: function (obj) {
+                axios.get("/friends/addFriend/" + obj.id)
+                    .then(res => {
+                        console.log(res.data);
+                       
+                    })
+                
+            }
+
+        }
+
+
+    })
+</script>

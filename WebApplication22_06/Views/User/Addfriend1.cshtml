@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewData["Title"] = "Addfriend1";
+    Layout = "~/Views/UserLayout.cshtml";
+}
+
+<h1>Add  friend1</h1>
+<h2>
+    @foreach(User elm in ViewBag.BazaUser)
+    {
+        <h1>@elm.name</h1>
+    }
+    
+</h2>
+

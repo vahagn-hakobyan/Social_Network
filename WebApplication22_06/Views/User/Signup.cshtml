@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewData["Title"] = "Signup";
+    Layout = "~/Views/MainLayout.cshtml";
+}
+
+<h1>Signup</h1>
+<div class="row">
+    @* sa nshanakuma vor ur tani tvyalner@ *@
+    <form class="col-md-6" action="/User/Add" method="post">
+        @* metod@ post enq talis vor linkum chgri  inch kod enq havaqel yev ayln *@
+        @if (TempData["Namak"] != null)
+        {
+            <p class="text-danger">@TempData["Namak"]</p>
+        }
+        <div class="form-group">
+            <label>First Name</label>
+            <input class="form-control" name="name"/>
+        </div>
+        <div class="form-group">
+            <label>Last Name</label>
+            <input class="form-control" name="surname"/>
+        </div>
+        <div class="form-group">
+            <label>Login</label>
+            <input class="form-control" name="login"/>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input class="form-control" name="password" type="password"/>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-success">Save</button>
+        </div>
+    </form>
+    <div class="col-md-6">
+        <img src="https://thumbs.dreamstime.com/z/portrait-stylish-man-colorful-background-bearded-dressed-striped-shirt-suspenders-hat-yellow-outdoors-146282631.jpg" />
+    </div>
+</div>

@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/MainLayout.cshtml";
+}
+<style>
+    #imp1 {
+        height: 30px;
+        width: 200px;
+    }
+
+    #imp2 {
+        height: 30px;
+        width: 200px;
+    }
+</style>
+
+
+<h1>Login</h1>
+<form method="post" action="/user/mutq">
+    @*asum em vor gna user controlleri mutq metodn ashxatacni*@
+    @if (TempData["Namak"] != null)
+    {
+        <p class="text-danger">@TempData["Namak"]</p>
+    }
+    <div class="form-group">
+        <label>Login</label>
+        <input class="form-control" id="imp1" name="login" />
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <input class="form-control" id="imp2" name="password" />
+    </div>
+    <div>
+        <button class="btn btn-warning btn-lg">login</button>
+    </div>
+
+
+</form>
+@*<h1>Login</h1>
+<form method="post" action="/user/mutq">*@
+    @*asum em vor gna user controlleri mutq metodn ashxatacni*@
+    @*@if (TempData["Namak"] != null)
+    {
+        <p class="text-danger">@TempData["Namak"]</p>
+    }
+    <div class="form-group">
+        <label>Login</label>
+        <input class="form-control" id="imp1" name="login" />
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <input class="form-control" id="imp2" name="password" />
+    </div>
+    <div>
+        <button class="btn btn-warning btn-lg">login</button>
+    </div>
+
+
+</form>*@
